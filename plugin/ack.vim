@@ -49,13 +49,17 @@ function! s:Ack(cmd, args)
 
   let grepprg_bak=&grepprg
   let grepformat_bak=&grepformat
+  let shellpipe_bak=&shellpipe
   try
+    " workaround for haskellvim
+    let &shellpipe=">"
     let &grepprg=g:ackprg
     let &grepformat=g:ackformat
     silent execute a:cmd . " " . escape(l:grepargs, '|')
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
+    let &shellpipe=shellpipe_bak
   endtry
 
   if a:cmd =~# '^l'
